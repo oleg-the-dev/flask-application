@@ -1,0 +1,299 @@
+* {
+    box-sizing: border-box;
+}
+
+html {
+    overflow-y: scroll;
+}
+
+.navbar {
+    display: flex;
+    background-color: #2b2b2b;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.nav-links a{
+    font-size: 18px;
+    color: white;
+    text-decoration: none;
+    transition: 0.3s ease-in-out all;
+    padding-left: 2rem;
+    padding-right: 2rem;
+}
+
+.active {
+    background-color: red;
+}
+
+.nav-links a:hover {
+    background-color: red;
+}
+
+.logo {
+    font-weight: 500;
+    font-size: 28px;
+    color: white;
+    text-decoration: none;
+    margin-left: 6rem;
+}
+
+.nav-btn {
+    visibility: hidden;
+}
+
+.navbar-image {
+    width: 25px;
+    height: 25px;
+    background-color: white;
+    border-radius: 50%;
+}
+
+.dropdown-link {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 1px;
+}
+
+
+.user-data {
+    margin-right: 5rem;
+    color: white;
+}
+
+.username {
+    margin-left: 3px;
+    margin-right: 3px;
+}
+
+.dropdown-content {
+    color: white;
+    text-decoration: none;
+    display: none;
+    position: absolute;
+    background-color: #2b2b2b;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+}
+
+.dropdown-content a{
+    color: white;
+    text-decoration: none;
+    max-width: auto;
+    padding: 0.25rem;
+}
+
+.dropdown-content a:hover{
+    background-color: red;
+}
+
+.dropdown:hover .dropdown-content {
+    display: flex;
+    flex-direction: column;
+}
+
+.page {
+    margin: 4rem;
+    margin-left: 6rem;
+    margin-right: 6rem;
+}
+
+.moderate-post {
+    display: flex;
+}
+
+.moderate-post a{
+    margin-right: 2rem;
+}
+
+.posts {
+    margin-bottom: 5rem;
+}
+
+.post-title {
+    text-decoration: none;
+}
+
+.post-comments {
+    float: right;
+}
+
+.post-info {
+    float: right;
+}
+
+.pagination {
+    text-align: center;
+}
+
+.pagination a {
+    font-size: 20px;
+}
+
+.page-pagination {
+    text-decoration: none;
+}
+
+.comments-avatar {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    float: left;
+    margin-right: 2rem;
+    margin-bottom: 1rem;
+}
+
+.comment-content {
+    display: flex;
+}
+
+.message {
+    padding: 20px;
+}
+
+.warning {
+    color: white;
+    background-color: red;
+}
+
+.success {
+    color: white;
+    background-color: green;
+}
+
+.close-btn {
+    margin-left: 15px;
+    color: white;
+    font-weight: bold;
+    float: right;
+    font-size: 22px;
+    line-height: 20px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.form-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.field {
+    margin-bottom: 2rem;
+}
+
+.errors li{
+    color: red;
+}
+
+.forms-btn {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 1rem;
+}
+
+.page-title {
+    display: flex;
+    justify-content: center;
+}
+
+.user-info {
+    margin-bottom: 4rem;
+}
+
+.settings-links {
+    display: flex;
+    justify-content: center;
+}
+
+.settings-links a:nth-child(-n+2) {
+    margin-right: 2rem;
+}
+
+.link-active {
+    text-decoration: none;
+}
+
+.user-avatar {
+    float: left;
+    width: 125px;
+    height: 125px;
+    border-radius: 50%;
+    margin-right: 3rem;
+}
+
+.about-form {
+    resize: none;
+}
+
+@media (max-width: 1000px) {
+
+    .nav-header {
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .nav-btn {
+        color: white;
+        visibility: visible;
+        border: transparent;
+        background-color: transparent;
+        transition: 0.3s ease-in-out all;
+    }
+
+    .nav-btn:hover {
+        background-color: red;
+    }
+
+    .logo {
+        margin-left: 1.75rem;
+    }
+
+    .navbar {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .nav-links {
+        display: none;
+        flex-direction: column;
+        width: 100%;
+    }
+
+
+    .user-data {
+        display: none;
+    }
+
+    .dropdown-content {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        box-shadow: none;
+        position: relative;
+    }
+
+    .dropdown-content a{
+        max-width: 100%;
+        padding-left: 2rem;
+        padding-top: 0;
+        padding-bottom: 0;
+    }
+
+    .dropdown-link {
+        display: none;
+    }
+
+    .show-links {
+        display: flex;
+        width: 100%;
+    }
+
+    .page {
+        margin-left: 1.75rem;
+        margin-right: 1.75rem;
+    }
+
+}

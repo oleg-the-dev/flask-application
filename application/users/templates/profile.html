@@ -1,0 +1,35 @@
+{% extends 'master.html' %}
+
+{% block title %}
+    {{ user.username }}'s profile
+{% endblock %}
+
+{% block content %}
+    <div>
+        <div class="user-info">
+            <img class="user-avatar" src="{{ avatars.robohash(user.username) }}" alt="User avatar">
+            <h1>
+                {{ user.username }}
+            </h1>
+            <p>
+                Member since:
+                {{ user.member_since.strftime('%Y %B %d') }}
+            </p>
+            {% if user.last_seen %}
+                <p>
+                    Last seen:
+                    {{ user.last_seen.strftime('%H:%M:%S UTC / %Y %B %d') }}
+                </p>
+            {% endif %}
+        </div>
+        {% if user.about %}
+            <h2>
+                About me:
+            </h2>
+            <p>
+                {{ user.about }}
+            </p>
+        {% endif %}
+        <hr>
+    </div>
+{% endblock %}

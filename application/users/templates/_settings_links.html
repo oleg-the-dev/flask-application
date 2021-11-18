@@ -1,0 +1,12 @@
+<div class="settings-links">
+    <a {% if request.path == url_for('users.settings_profile') %} class="link-active" {% endif %} href="{{ url_for('users.settings_profile') }}">
+        Profile Settings
+    </a>
+
+    <a {% if request.path == url_for('users.settings_security') %} class="link-active" {% endif %} href="{{ url_for('users.settings_security') }}">
+        Security Settings
+    </a>
+    <a {% if request.path == url_for('users.account_delete') %} class="link-active" {% endif %} href="{{ url_for('users.account_delete') }}">
+        Delete Account
+    </a>
+</div>

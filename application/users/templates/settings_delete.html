@@ -1,0 +1,30 @@
+{% from '_formhelper.html' import render_field %}
+{% extends 'master.html' %}
+
+{% block title %}
+    Delete Account
+{% endblock %}
+
+{% block content %}
+    <h1 class="page-title">
+        Delete Account
+    </h1>
+    {% include '_settings_links.html' %}
+    <hr width="400">
+    <div style="text-align:center">
+        <p>This action can't be undone.</p>
+        <p>Your posts ({{ current_user.posts.count() }}) and comments ({{ current_user.comments.count() }}) will be deleted.</p>
+        <p>To delete your account please write down <b>{{ confirm_txt }}</b> in "message" field.</p>
+    </div>
+    <div class="form-wrapper">
+        <form method="POST">
+            {{ form.hidden_tag() }}
+            {{ render_field(form.message) }}
+            {{ render_field(form.password) }}
+            <div class="forms-btn">
+            {{ form.submit }}
+            </div>
+        </form>
+    </div>
+    <hr width="400">
+{% endblock %}

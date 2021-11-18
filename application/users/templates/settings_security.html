@@ -1,0 +1,43 @@
+{% from '_formhelper.html' import render_field %}
+{% extends 'master.html' %}
+
+{% block title %}
+    Security Settings
+{% endblock %}
+
+{% block content %}
+    <h1 class="page-title">
+        Security Settings
+    </h1>
+    {% include '_settings_links.html' %}
+    <hr width="400">
+    <h2 class="page-title">
+        Change your password
+    </h2>
+    <div class="form-wrapper">
+        <form method="POST">
+            {{ password_form.csrf_token(id = "unique_id") }}
+            {{ render_field(password_form.password, id="password-form-pw") }}
+            {{ render_field(password_form.new_password) }}
+            {{ render_field(password_form.confirm_password) }}
+            <div class="forms-btn">
+                {{ password_form.submit(id="password-form-btn") }}
+            </div>
+        </form>
+    </div>
+    <hr width="400">
+    <h2 class="page-title">
+        Change your Email
+    </h2>
+    <div class="form-wrapper">
+        <form method="POST">
+            {{ password_form.csrf_token(id = "another_unique_id") }}
+            {{ render_field(email_form.password, id="email-form-pw") }}
+            {{ render_field(email_form.email) }}
+            <div class="forms-btn">
+                {{ email_form.submit(id="email-form-btn") }}
+            </div>
+        </form>
+    </div>
+    <hr width="400">
+{% endblock %}

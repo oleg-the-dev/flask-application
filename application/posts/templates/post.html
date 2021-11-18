@@ -1,0 +1,65 @@
+{% from '_formhelper.html' import render_field %}
+{% extends 'master.html' %}
+
+{% block title %}
+    {{ post.title }}
+{% endblock %}
+
+{% block content %}
+    <h1>
+        {{ post.title }}
+    </h1>
+    <div>
+        {{ post.content|safe }}
+    </div>
+    <div class="post-info">
+        {{ post.author.username }}
+        {{ post.timestamp.strftime('%Y-%m-%d') }}
+    </div>
+    <br>
+    <hr>
+    {% if current_user.is_authenticated %}
+    <div class="form-wrapper">
+        <form method="POST">
+            {{ form.hidden_tag() }}
+            {{ render_field(form.content, cols=50, rows=8, placeholder='Comment', maxlength="1000") }}
+            <div class="field">
+                {{ form.recaptcha }}
+            </div>
+            <div class="forms-btn">
+                {{ form.submit }}
+            </div>
+        </form>
+    </div>
+    {% endif %}
+    <div class="comments-wrapper" id="comments">
+        {% for comment in comments.items %}
+            <div class="comment">
+                <img class="comments-avatar" src="{{ avatars.robohash(comment.author.username) }}">
+                <p>
+                <b>{{ comment.author.username }}</b> said {{ comment.timestamp.strftime('%H:%M:%S UTC / %Y %B %d') }}
+                    {% if comment.author.username == current_user.username or (current_user.is_authenticated and current_user.is_admin()) %}
+                        | <a href="{{ url_for('posts.delete_comment', post_id=post.id, comment_id=comment.id) }}">Delete</a>
+                    {% endif %}
+                </p>
+                <p class="comment-content">
+                    {{ comment.content }}
+                </p>
+                <hr>
+            </div>
+        {% endfor %}
+    </div>
+    <div class="pagination">
+        {% for page_num in comments.iter_pages(left_edge=1, right_edge=1, left_current=1, right_current=2) %}
+        {% if page_num %}
+            {% if comments.page == page_num %}
+                <a href="{{ url_for('posts.post', post_id = post.id, page=page_num) }}">{{ page_num }}</a>
+                {% else %}
+                <a href="{{ url_for('posts.post', post_id = post.id, page=page_num) }}" class="page-pagination">{{ page_num }}</a>
+            {% endif %}
+        {% else %}
+            ...
+        {% endif %}
+        {% endfor %}
+    </div>
+{% endblock %}

@@ -1,0 +1,36 @@
+{% from '_formhelper.html' import render_field %}
+{% extends 'master.html' %}
+
+{% block title %}
+    Sign Up
+{% endblock %}
+
+{% block content %}
+    <h1 class="page-title">
+        Sign Up
+    </h1>
+    <div class="form-wrapper">
+        <form method="POST">
+            {{ form.hidden_tag() }}
+            <hr>
+            {{ render_field(form.username) }}
+            {{ render_field(form.email) }}
+            {{ render_field(form.password) }}
+            {{ render_field(form.confirm_password) }}
+            <div class="field">
+            {{ form.recaptcha }}
+            </div>
+            <div class="forms-btn">
+            {{ form.submit }}
+            </div>
+            <p>
+                Already have an account?
+                <a href="{{ url_for('users.sign_in') }}">
+                    Sign In.
+                </a>
+            </p>
+            <hr>
+        </form>
+    </div>
+{% endblock %}
+

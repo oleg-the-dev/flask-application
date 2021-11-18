@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" sizes="16x16" href="{{ url_for('static', filename='favicon.png') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='/styles.css') }}"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta2/css/all.min.css">
+    <title>
+        {% block title %}
+
+        {% endblock %}
+    </title>
+</head>
+<body>
+<!-- navigation -->
+<nav class="navbar">
+    <!-- header -->
+    <div  class="nav-header">
+        <a class="logo" href="{{ url_for('main.home') }}">Flask Blog</a>
+        <button class="nav-btn">
+            <i class="fas fa-bars"></i>
+        </button>
+    </div>
+    <!-- links -->
+    <div class="nav-links">
+        <a {% if request.path in ('/' '/home') %} class="active" {% endif %} href="{{ url_for('main.home') }}">
+            Home
+        </a>
+        <a {% if request.path == url_for('main.about') %} class="active" {% endif %} href="{{ url_for('main.about') }}">
+            About
+        </a>
+        <a {% if request.path == url_for('main.contact') %} class="active" {% endif %} href="{{ url_for('main.contact') }}" >
+            Contact
+        </a>
+        </div>
+        <div class="nav-links user-data">
+        {% if current_user.is_authenticated %}
+            <div class="dropdown">
+                <a class="dropdown-link" href="{{ url_for('users.profile', username=current_user.username) }}">
+                    <img class="navbar-image" src="{{ avatars.robohash(current_user.username) }}" alt="User avatar">
+                    <div class="username">
+                        {{ current_user.username }}
+                    </div>
+                    <i class="fas fa-caret-down"></i>
+                </a>
+                    <div class="dropdown-content">
+                        {% if current_user.is_admin() %}
+                            <a href="{{ url_for('admin.index') }}">Admin Page</a>
+                        {% endif %}
+                        {% if current_user.can_create_posts() %}
+                            <a href="{{ url_for('posts.create_post') }}">Create Post</a>
+                        {% endif %}
+                            <a href="{{ url_for('users.profile', username=current_user.username) }}">Profile</a>
+                            <a href="{{ url_for('users.settings_profile') }}">Settings</a>
+                            <a href="{{ url_for('users.sign_out') }}">Sign Out</a>
+                    </div>
+            </div>
+        {% else %}
+            <a {% if request.path == url_for('users.sign_in') %} class="active" {% endif %} href="{{ url_for('users.sign_in') }}">
+                Sign In
+            </a>
+            <a {% if request.path == url_for('users.sign_up') %} class="active" {% endif %} href="{{ url_for('users.sign_up') }}">
+                Sign Up
+            </a>
+        {% endif %}
+    </div>
+</nav>
+<!-- main -->
+<main class="page">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="message {{ category }}">
+                    <span class="close-btn" onclick="this.parentElement.style.display='none';">&times;</span>
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+    <div class="content">
+        {% block content %}
+
+        {% endblock %}
+    </div>
+</main>
+<!-- js script -->
+<script src="{{ url_for('static', filename='scripts.js') }}"></script>
+</body>
+</html>

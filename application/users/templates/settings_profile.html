@@ -1,0 +1,25 @@
+{% from '_formhelper.html' import render_field %}
+{% extends 'master.html' %}
+
+{% block title %}
+    Profile Settings
+{% endblock %}
+
+{% block content %}
+    <h1 class="page-title">
+        Profile Settings
+    </h1>
+    {% include '_settings_links.html' %}
+    <hr width="400">
+    <div class="form-wrapper">
+        <form method="POST">
+            {{ form.hidden_tag() }}
+            {{ render_field(form.username) }}
+            {{ render_field(form.about, cols=50, rows=4, class="about-form", maxlength="256") }}
+            <div class="forms-btn">
+                {{ form.submit }}
+            </div>
+        </form>
+    </div>
+    <hr width="400">
+{% endblock %}
