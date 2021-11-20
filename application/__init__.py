@@ -24,7 +24,7 @@ ckeditor = CKEditor()
 mail = Mail()
 
 
-def create_app(config_class=config.ProductionConfig):
+def create_app(config_class=config.DevConfig):
     # App generation and configuration
     app = Flask(__name__)
     app.config.from_object(config_class)
