@@ -100,14 +100,32 @@ html {
 
 .moderate-post {
     display: flex;
+    float: right;
 }
 
-.moderate-post a{
+.moderate-post a:nth-child(1){
     margin-right: 2rem;
 }
 
-.posts {
+.homepage {
+    width: 100%;
+}
+
+.post {
     margin-bottom: 5rem;
+    float: left;
+    width: 80%;
+    padding-right: 2rem;
+}
+
+.tags {
+    float: right;
+    width: 20%;
+    background-color: #F5F5F5;
+}
+
+#tags {
+    margin-left: 1rem;
 }
 
 .post-title {
@@ -124,6 +142,15 @@ html {
 
 .pagination {
     text-align: center;
+    width: 80%;
+}
+
+.comment-pagination{
+    text-align: center;
+}
+
+.comment-pagination a {
+    font-size: 20px;
 }
 
 .pagination a {
@@ -294,6 +321,20 @@ html {
     .page {
         margin-left: 1.75rem;
         margin-right: 1.75rem;
+    }
+
+    .post {
+        width: 100%;
+        padding-right: 0px;
+    }
+
+    .tags {
+        visibility: hidden;
+        width: 0%;
+    }
+
+    .pagination {
+        width: 100%;
     }
 
 }

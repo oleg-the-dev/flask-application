@@ -3,8 +3,8 @@ import os
 
 class Config:
     SECRET_KEY = os.environ.get('SECRET_KEY')
-    FLASK_ADMIN_SWATCH = 'flatly'
     SQLALCHEMY_TRACK_MODIFICATIONS = False
+    FLASK_ADMIN_SWATCH = 'flatly'
     CKEDITOR_PKG_TYPE = 'full'
 
     # Email

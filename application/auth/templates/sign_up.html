@@ -2,34 +2,35 @@
 {% extends 'master.html' %}
 
 {% block title %}
-    Sign In
+    Sign Up
 {% endblock %}
 
 {% block content %}
     <h1 class="page-title">
-        Sign In
+        Sign Up
     </h1>
     <div class="form-wrapper">
         <form method="POST">
             {{ form.hidden_tag() }}
             <hr>
             {{ render_field(form.username) }}
+            {{ render_field(form.email) }}
             {{ render_field(form.password) }}
+            {{ render_field(form.confirm_password) }}
             <div class="field">
-                <b>Remember me:</b> {{ form.remember }}
-            </div>
-            <div class="field">
-                {{ form.recaptcha }}
+            {{ form.recaptcha }}
             </div>
             <div class="forms-btn">
-                {{ form.submit }}
+            {{ form.submit }}
             </div>
             <p>
-                New to this site?
-            <a href="{{ url_for('users.sign_up') }}">Create an account.</a>
+                Already have an account?
+                <a href="{{ url_for('auth.sign_in') }}">
+                    Sign In.
+                </a>
             </p>
-            <a href="{{ url_for('users.reset_password_request') }}">Forgot password?</a>
             <hr>
         </form>
     </div>
 {% endblock %}
+

@@ -53,14 +53,14 @@
                         {% endif %}
                             <a href="{{ url_for('users.profile', username=current_user.username) }}">Profile</a>
                             <a href="{{ url_for('users.settings_profile') }}">Settings</a>
-                            <a href="{{ url_for('users.sign_out') }}">Sign Out</a>
+                            <a href="{{ url_for('auth.sign_out') }}">Sign Out</a>
                     </div>
             </div>
         {% else %}
-            <a {% if request.path == url_for('users.sign_in') %} class="active" {% endif %} href="{{ url_for('users.sign_in') }}">
+            <a {% if request.path == url_for('auth.sign_in') %} class="active" {% endif %} href="{{ url_for('auth.sign_in') }}">
                 Sign In
             </a>
-            <a {% if request.path == url_for('users.sign_up') %} class="active" {% endif %} href="{{ url_for('users.sign_up') }}">
+            <a {% if request.path == url_for('auth.sign_up') %} class="active" {% endif %} href="{{ url_for('auth.sign_up') }}">
                 Sign Up
             </a>
         {% endif %}

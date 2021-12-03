@@ -5,7 +5,7 @@ from flask_admin import Admin
 from flask_login import LoginManager
 from flask_bcrypt import Bcrypt
 from flask_avatars import Avatars
-from application.admin import AdminHomeView, AdminUserView, AdminPostView, AdminCommentView
+from application.admin import AdminHomeView, AdminUserView, AdminPostView, AdminCommentView, AdminTagView
 from flask_ckeditor import CKEditor
 from flask_mail import Mail
 import config
@@ -24,7 +24,7 @@ ckeditor = CKEditor()
 mail = Mail()
 
 
-def create_app(config_class=config.ProductionConfig):
+def create_app(config_class=config.DevConfig):
     # App generation and configuration
     app = Flask(__name__)
     app.config.from_object(config_class)
@@ -40,18 +40,21 @@ def create_app(config_class=config.ProductionConfig):
     mail.init_app(app)
 
     # Admin plugin
-    from application.models import User, Post, Comment
+    from application.models import User, Post, Comment, Tag
     admin.add_view(AdminUserView(User, db.session))
     admin.add_view(AdminPostView(Post, db.session))
     admin.add_view(AdminCommentView(Comment, db.session))
+    admin.add_view(AdminTagView(Tag, db.session))
 
     # Blueprints
     from application.main.views import main
+    from application.auth.views import auth
     from application.users.views import users
     from application.posts.views import posts
     from application.errors.handlers import errors
 
     app.register_blueprint(main)
+    app.register_blueprint(auth)
     app.register_blueprint(users)
     app.register_blueprint(posts)
     app.register_blueprint(errors)

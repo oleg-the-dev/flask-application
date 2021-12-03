@@ -1,7 +1,7 @@
 from flask import Blueprint, flash, render_template, redirect, url_for, request, current_app
 from flask_login import login_required, current_user
 from application.posts.forms import PostForm, CommentForm
-from application.models import Post, Comment
+from application.models import Post, Comment, Tag
 from application import db
 from application.decorators import roles_required
 
@@ -47,7 +47,7 @@ def post(post_id):
     return render_template('post.html', post=post, form=form, comments=comments)
 
 
-@posts.route('/post/<int:post_id>/delete_comment/<int:comment_id>')
+@posts.route('/post/<int:post_id>/delete_comment/<int:comment_id>', methods=['GET', 'POST'])
 @login_required
 def delete_comment(post_id, comment_id):
     post = Post.query.get_or_404(post_id)
@@ -86,3 +86,10 @@ def delete_post(post_id):
     db.session.commit()
     flash(f'«{post_title}» has been deleted', 'success')
     return redirect(url_for('main.home'))
+
+
+@posts.route('/tag/<tag_name>')
+def tag(tag_name):
+    tag = Tag.query.filter_by(name=tag_name).first_or_404()
+    posts = Post.query.filter(Post.tags.any(name=tag_name))
+    return render_template('tag.html', tag=tag, posts=posts)

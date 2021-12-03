@@ -10,6 +10,12 @@ def load_user(user_id):
     return User.query.get(int(user_id))
 
 
+post_tags = db.Table('post_tags',
+                     db.Column('tag_id', db.Integer, db.ForeignKey('tag.id')),
+                     db.Column('post_id', db.Integer, db.ForeignKey('post.id')),
+                     )
+
+
 class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(32), index=True, unique=True, nullable=False)
@@ -76,6 +82,7 @@ class Post(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('user.id', ondelete='CASCADE'))
     comments = db.relationship('Comment', backref='post', lazy='dynamic', passive_deletes=True,
                                cascade='all, delete, delete-orphan')
+    tags = db.relationship('Tag', secondary=post_tags, backref='posts')
 
     def __repr__(self):
         return f"Post('{self.title}', '{self.content}', '{self.timestamp}')"
@@ -97,4 +104,18 @@ class Comment(db.Model):
         return f"Comment('{self.post_id}', '{self.user_id}', '{self.timestamp}')"
 
     def __str__(self):
-        return f'{self.post_id}, {self.content}, {self.timestamp}'
+        return f'{self.content}, {self.timestamp}'
+
+
+class Tag(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(64), unique=True, nullable=False)
+
+    # Relationships
+    post_id = db.Column(db.Integer, db.ForeignKey('post.id'))
+
+    def __repr__(self):
+        return f"Tag('{self.name}')"
+
+    def __str__(self):
+        return f'{self.name}'

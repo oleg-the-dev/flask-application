@@ -1,54 +1,10 @@
 from flask import Blueprint, render_template, flash, redirect, url_for, request
-from application.users.forms import SignUpForm, SignInForm, EditProfileForm, PasswordChangeForm, DeleteAccountForm, \
-    ResetPasswordRequestForm, ResetPasswordForm, ChangeEmailForm
+from application.users.forms import EditProfileForm, PasswordChangeForm, ChangeEmailForm, DeleteAccountForm
 from application.models import User
 from application import db
-from flask_login import current_user, login_user, login_required, logout_user
-from application.users.utils import send_email
+from flask_login import current_user, login_required
 
 users = Blueprint('users', __name__, template_folder='templates')
-
-
-@users.route('/signup', methods=['GET', 'POST'])
-def sign_up():
-    if current_user.is_authenticated:
-        return redirect(url_for('main.home'))
-    form = SignUpForm()
-    if form.validate_on_submit():
-        user = User(
-            username=form.username.data,
-            email=form.email.data,
-            password=form.password.data
-        )
-        db.session.add(user)
-        db.session.commit()
-        flash(f'Account created for {form.username.data}', 'success')
-        return redirect(url_for('main.home'))
-    return render_template('sign_up.html', form=form)
-
-
-@users.route('/signin', methods=['GET', 'POST'])
-def sign_in():
-    if current_user.is_authenticated:
-        return redirect(url_for('main.home'))
-    form = SignInForm()
-    if form.validate_on_submit():
-        user = User.query.filter_by(username=form.username.data).first()
-        if user and user.verify_password(form.password.data):
-            login_user(user, remember=form.remember.data)
-            next_page = request.args.get('next')
-            flash(f'You have signed in as {current_user.username}.', 'success')
-            return redirect(next_page) if next_page else redirect(url_for('main.home'))
-        flash('Login unsuccessful. Please check email and password.', 'warning')
-        return redirect(url_for('users.sign_in'))
-    return render_template('sign_in.html', form=form)
-
-
-@users.route('/signout')
-@login_required
-def sign_out():
-    logout_user()
-    return redirect(url_for('main.home'))
 
 
 @users.route('/profile/<username>')
@@ -113,37 +69,3 @@ def account_delete():
         flash('Invalid information.', 'warning')
         return redirect(url_for('users.account_delete'))
     return render_template('settings_delete.html', form=form, confirm_txt=confirm_txt)
-
-
-@users.route('/reset_password_request', methods=['GET', 'POST'])
-def reset_password_request():
-    if current_user.is_authenticated:
-        return redirect(url_for('main.home'))
-    form = ResetPasswordRequestForm()
-    if form.validate_on_submit():
-        user = User.query.filter_by(email=form.email.data).first()
-        send_email(user)
-        flash('An email has been sent with instructions to reset your password. Please check «Spam» folder as well.',
-              'success')
-        return redirect(url_for('users.sign_in'))
-    return render_template('reset_password_request.html', form=form)
-
-
-@users.route("/reset_password/<token>", methods=['GET', 'POST'])
-def reset_password(token):
-    if current_user.is_authenticated:
-        return redirect(url_for('main.home'))
-    user = User.verify_reset_token(token)
-    if user is None:
-        flash('That is an invalid or expired token. ', 'warning')
-        return redirect(url_for('users.reset_password_request'))
-    form = ResetPasswordForm()
-    if form.validate_on_submit():
-        if form.username.data == user.username:
-            user.password = form.password.data
-            db.session.commit()
-            flash('Your password has been updated! You are now able to sign in.', 'success')
-            return redirect(url_for('users.sign_in'))
-        flash('Username is invalid.', 'warning')
-        return redirect(request.url)
-    return render_template('reset_password.html', form=form)
