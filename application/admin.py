@@ -6,7 +6,7 @@ from flask import redirect, url_for, request, abort
 
 class AdminMixin:
     def is_accessible(self):
-        return current_user.is_authenticated and current_user.is_admin()
+        return current_user.is_authenticated and current_user.is_superuser()
 
     def inaccessible_callback(self, name, **kwargs):
         # redirect to sign in page if user doesn't have access
@@ -31,16 +31,9 @@ class AdminHomeView(AdminMixin, AdminIndexView):
 
 class AdminUserView(AdminMixin, ModelView):
     can_create = False
-    column_list = ['username', 'email', 'member_since', 'last_seen', 'role']
+    column_list = ['username', 'email', 'superuser', 'member_since', 'last_seen']
     column_searchable_list = ['username', 'email']
-    column_editable_list = ['role']
     form_excluded_columns = ['password_hash']
-    form_choices = {
-        'role': [
-            ('admin', 'admin'),
-            ('writer', 'writer')
-        ]
-    }
 
 
 class AdminPostView(AdminMixin, ModelView):

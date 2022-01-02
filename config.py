@@ -6,6 +6,7 @@ class Config:
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     FLASK_ADMIN_SWATCH = 'flatly'
     CKEDITOR_PKG_TYPE = 'full'
+    JWT_EXPIRATION = 300
 
     # Email
     MAIL_SERVER = os.environ.get('MAIL_SERVER')

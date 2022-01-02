@@ -1,5 +1,6 @@
 from flask import Blueprint, render_template, flash, redirect, url_for, request
-from application.users.forms import EditProfileForm, PasswordChangeForm, ChangeEmailForm, DeleteAccountForm
+from application.users.forms import EditProfileForm, PasswordChangeForm, ChangeEmailForm, \
+    DeleteAccountForm
 from application.models import User
 from application import db
 from flask_login import current_user, login_required
@@ -52,7 +53,8 @@ def settings_security():
         return redirect(url_for('users.settings_security'))
     elif request.method == 'GET':
         email_form.email.data = current_user.email
-    return render_template('settings_security.html', password_form=password_form, email_form=email_form)
+    return render_template('settings_security.html', password_form=password_form,
+                           email_form=email_form)
 
 
 @users.route('/settings/delete', methods=['GET', 'POST'])

@@ -14,3 +14,7 @@ class CommentForm(FlaskForm):
     content = TextAreaField('Comment', validators=[DataRequired()])
     recaptcha = RecaptchaField()
     submit = SubmitField('Submit')
+
+
+class DeleteForm(FlaskForm):
+    submit = SubmitField('Delete')

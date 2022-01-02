@@ -19,12 +19,12 @@ class SignUpForm(FlaskForm):
     submit = SubmitField('Sign Up')
 
     def validate_username(self, username):
-        user = User.query.filter_by(username=username.data).first()
+        user = User.get_user_by_username(username.data)
         if user:
             raise ValidationError('The username is invalid or taken, please choose another.')
 
     def validate_email(self, email):
-        user = User.query.filter_by(email=email.data).first()
+        user = User.get_user_by_email(email.data)
         if user:
             raise ValidationError('The email is invalid or taken, please choose another.')
 
@@ -42,7 +42,7 @@ class ResetPasswordRequestForm(FlaskForm):
     submit = SubmitField('Send Email')
 
     def validate_email(self, email):
-        user = User.query.filter_by(email=email.data).first()
+        user = User.get_user_by_email(email.data)
         if user is None:
             raise ValidationError('The email is invalid.')
 

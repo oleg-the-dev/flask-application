@@ -42,8 +42,11 @@
                 <img class="comments-avatar" src="{{ avatars.robohash(comment.author.username) }}">
                 <p>
                 <a href="{{ url_for('users.profile', username=comment.author.username) }}">{{ comment.author.username }}</a> said {{ comment.timestamp.strftime('%H:%M:%S UTC / %Y %B %d') }}
-                    {% if comment.author.username == current_user.username or (current_user.is_authenticated and current_user.is_admin()) %}
-                        | <a href="{{ url_for('posts.delete_comment', post_id=post.id, comment_id=comment.id) }}">Delete</a>
+                    {% if comment.author.username == current_user.username or (current_user.is_authenticated and current_user.is_superuser()) %}
+                    | <form method="post" action="{{ url_for('posts.delete_comment', post_id=post.id, comment_id=comment.id) }}">
+                        {{ delete_form.hidden_tag() }}
+                        {{ delete_form.submit }}
+                      </form>
                     {% endif %}
                 </p>
                 <p class="comment-content">

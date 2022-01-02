@@ -2,6 +2,7 @@ from application import db, login_manager, bcrypt
 from flask_login import UserMixin
 from datetime import datetime
 from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
+from itsdangerous import BadSignature, SignatureExpired
 from flask import current_app
 
 
@@ -24,7 +25,7 @@ class User(db.Model, UserMixin):
     about = db.Column(db.String(256), nullable=True)
     member_since = db.Column(db.DateTime, default=datetime.utcnow)
     last_seen = db.Column(db.DateTime, default=datetime.utcnow)
-    role = db.Column(db.String(32), nullable=True)
+    superuser = db.Column(db.Boolean, default=False)
 
     # Relationships
     posts = db.relationship('Post', backref='author', lazy='dynamic', passive_deletes=True,
@@ -32,6 +33,23 @@ class User(db.Model, UserMixin):
     comments = db.relationship('Comment', backref='author', lazy='dynamic', passive_deletes=True,
                                cascade='all, delete, delete-orphan')
 
+    # Class methods
+    @classmethod
+    def get_user_by_email(cls, email: str):
+        return cls.query.filter(cls.email == email).first()
+
+    @classmethod
+    def get_user_by_username(cls, username: str):
+        return cls.query.filter(cls.username == username).first()
+
+    # Superuser methods
+    def make_superuser(self):
+        self.superuser = True
+
+    def is_superuser(self):
+        return self.superuser
+
+    # Password methods
     @property
     def password(self):
         raise AttributeError('Password is not readable attribute')
@@ -43,11 +61,9 @@ class User(db.Model, UserMixin):
     def verify_password(self, password):
         return bcrypt.check_password_hash(self.password_hash, password)
 
-    def set_role(self, new_role: str):
-        self.role = new_role  # Use user.set_role(None) to delete role
-
-    def get_reset_token(self, expires_sec=300):
-        s = Serializer(current_app.config['SECRET_KEY'], expires_sec)
+    # Token methods
+    def get_reset_token(self):
+        s = Serializer(current_app.config['SECRET_KEY'], current_app.config['JWT_EXPIRATION'])
         return s.dumps({'user_id': self.id}).decode('utf-8')
 
     @staticmethod
@@ -55,21 +71,16 @@ class User(db.Model, UserMixin):
         s = Serializer(current_app.config['SECRET_KEY'])
         try:
             user_id = s.loads(token)['user_id']
-        except:
+        except (BadSignature, SignatureExpired):
             return None
         return User.query.get(user_id)
 
-    def is_admin(self):
-        return self.role == 'admin'
-
-    def can_create_posts(self):
-        return self.role in ('admin', 'writer')
-
+    # Magic methods
     def __repr__(self):
-        return f"User('{self.username}', '{self.email}', '{self.member_since}', '{self.role}')"
+        return f"User('{self.username}', '{self.email}', '{self.member_since}')"
 
     def __str__(self):
-        return f'{self.username}, {self.email}, {self.role}'
+        return f'{self.username}, {self.email}'
 
 
 class Post(db.Model):
@@ -84,6 +95,7 @@ class Post(db.Model):
                                cascade='all, delete, delete-orphan')
     tags = db.relationship('Tag', secondary=post_tags, backref='posts')
 
+    # Magic methods
     def __repr__(self):
         return f"Post('{self.title}', '{self.content}', '{self.timestamp}')"
 
@@ -100,6 +112,7 @@ class Comment(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('user.id', ondelete='CASCADE'))
     post_id = db.Column(db.Integer, db.ForeignKey('post.id', ondelete='CASCADE'))
 
+    # Magic methods
     def __repr__(self):
         return f"Comment('{self.post_id}', '{self.user_id}', '{self.timestamp}')"
 
@@ -114,6 +127,7 @@ class Tag(db.Model):
     # Relationships
     post_id = db.Column(db.Integer, db.ForeignKey('post.id'))
 
+    # Magic methods
     def __repr__(self):
         return f"Tag('{self.name}')"
 
