@@ -22,7 +22,7 @@
             </ul>
             {% endfor %}
         </div>
-{% for post in posts.items %}
+        {% for post in posts.items %}
             <div class="post">
                 <h2>
                     <a class="post-title" href="{{ url_for('posts.post', post_id=post.id) }}">{{ post.title }}</a>
@@ -30,7 +30,7 @@
                 <p>
                     {{ post.timestamp.strftime('%Y %B %d') }}
                 </p>
-                {% if current_user.is_authenticated and current_user.can_create_posts() %}
+                {% if current_user.is_authenticated and current_user.is_superuser() %}
                     <div class="moderate-post">
                         <a href="{{ url_for('posts.update_post', post_id=post.id) }}">Update</a>
                         <form method="post" action="{{ url_for('posts.delete_post', post_id=post.id) }}">
