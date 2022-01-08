@@ -43,8 +43,11 @@ class User(db.Model, UserMixin):
         return cls.query.filter(cls.username == username).first()
 
     # Superuser methods
-    def make_superuser(self):
+    def create_superuser(self):
         self.superuser = True
+
+    def delete_superuser(self):
+        self.superuser = False
 
     def is_superuser(self):
         return self.superuser

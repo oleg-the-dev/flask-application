@@ -249,7 +249,8 @@ html {
     margin-right: 3rem;
 }
 
-.about-form {
+textarea {
+    width: 100%;
     resize: none;
 }
 
