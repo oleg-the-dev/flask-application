@@ -1,6 +1,6 @@
 # Flask Application
 
-Blog with basic functionality of any other blog such as authentication, authorazition, account settings, admin page and so on.
+Blog with basic features of any other blog such as authentication, authorazition, account settings, admin page and so on.
 
 ![How it looks like](https://sun9-19.userapi.com/impg/WmIZjysp2LyyqL8fqAWVKbdJXL1a8eBYliteKg/s2Mozawm6kA.jpg?size=1788x596&quality=96&sign=3a20d9c245d03fe8051e26513641cfe0&type=album)
 
